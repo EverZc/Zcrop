@@ -1,6 +1,6 @@
 package me.pandazhang.app_zcrop;
 
-public interface UCropFragmentCallback {
+public interface ZCropFragmentCallback {
 
     /**
      * Return loader status
@@ -10,6 +10,6 @@ public interface UCropFragmentCallback {
     /**
      * Return cropping result or error
      */
-    void onCropFinish(UCropFragment.UCropResult result);
+    void onCropFinish(ZCropFragment.UCropResult result);
 
 }

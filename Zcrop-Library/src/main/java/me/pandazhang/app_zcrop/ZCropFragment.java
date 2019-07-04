@@ -46,7 +46,7 @@ import java.util.Locale;
 import static android.app.Activity.RESULT_OK;
 
 @SuppressWarnings("ConstantConditions")
-public class UCropFragment extends Fragment {
+public class ZCropFragment extends Fragment {
 
     public static final int DEFAULT_COMPRESS_QUALITY = 90;
     public static final Bitmap.CompressFormat DEFAULT_COMPRESS_FORMAT = Bitmap.CompressFormat.JPEG;
@@ -61,11 +61,11 @@ public class UCropFragment extends Fragment {
 
     }
 
-    public static final String TAG = "UCropFragment";
+    public static final String TAG = "ZCropFragment";
     private static final int TABS_COUNT = 3;
     private static final int SCALE_WIDGET_SENSITIVITY_COEFFICIENT = 15000;
     private static final int ROTATE_WIDGET_SENSITIVITY_COEFFICIENT = 42;
-    private UCropFragmentCallback callback;
+    private ZCropFragmentCallback callback;
     private int mActiveWidgetColor;
     @ColorInt
     private int mRootViewBackgroundColor;
@@ -86,8 +86,8 @@ public class UCropFragment extends Fragment {
     private int mCompressQuality = DEFAULT_COMPRESS_QUALITY;
     private int[] mAllowedGestures = new int[]{SCALE, ROTATE, ALL};
 
-    public static UCropFragment newInstance(Bundle uCrop) {
-        UCropFragment fragment = new UCropFragment();
+    public static ZCropFragment newInstance(Bundle uCrop) {
+        ZCropFragment fragment = new ZCropFragment();
         fragment.setArguments(uCrop);
         return fragment;
     }
@@ -96,14 +96,14 @@ public class UCropFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            callback = (UCropFragmentCallback) context;
+            callback = (ZCropFragmentCallback) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement UCropFragmentCallback");
+                    + " must implement ZCropFragmentCallback");
         }
     }
 
-    public void setCallback(UCropFragmentCallback callback) {
+    public void setCallback(ZCropFragmentCallback callback) {
         this.callback = callback;
     }
 
@@ -124,10 +124,10 @@ public class UCropFragment extends Fragment {
 
 
     public void setupViews(View view, Bundle args) {
-        mActiveWidgetColor = args.getInt(UCrop.Options.EXTRA_UCROP_COLOR_WIDGET_ACTIVE, ContextCompat.getColor(getContext(), R.color.ucrop_color_widget_active));
-        mLogoColor = args.getInt(UCrop.Options.EXTRA_UCROP_LOGO_COLOR, ContextCompat.getColor(getContext(), R.color.ucrop_color_default_logo));
-        mShowBottomControls = !args.getBoolean(UCrop.Options.EXTRA_HIDE_BOTTOM_CONTROLS, false);
-        mRootViewBackgroundColor = args.getInt(UCrop.Options.EXTRA_UCROP_ROOT_VIEW_BACKGROUND_COLOR, ContextCompat.getColor(getContext(), R.color.ucrop_color_crop_background));
+        mActiveWidgetColor = args.getInt(ZCrop.Options.EXTRA_UCROP_COLOR_WIDGET_ACTIVE, ContextCompat.getColor(getContext(), R.color.ucrop_color_widget_active));
+        mLogoColor = args.getInt(ZCrop.Options.EXTRA_UCROP_LOGO_COLOR, ContextCompat.getColor(getContext(), R.color.ucrop_color_default_logo));
+        mShowBottomControls = !args.getBoolean(ZCrop.Options.EXTRA_HIDE_BOTTOM_CONTROLS, false);
+        mRootViewBackgroundColor = args.getInt(ZCrop.Options.EXTRA_UCROP_ROOT_VIEW_BACKGROUND_COLOR, ContextCompat.getColor(getContext(), R.color.ucrop_color_crop_background));
 
         initiateRootViews(view);
         callback.loadingProgress(true);
@@ -155,8 +155,8 @@ public class UCropFragment extends Fragment {
     }
 
     private void setImageData(@NonNull Bundle bundle) {
-        Uri inputUri = bundle.getParcelable(UCrop.EXTRA_INPUT_URI);
-        Uri outputUri = bundle.getParcelable(UCrop.EXTRA_OUTPUT_URI);
+        Uri inputUri = bundle.getParcelable(ZCrop.EXTRA_INPUT_URI);
+        Uri outputUri = bundle.getParcelable(ZCrop.EXTRA_OUTPUT_URI);
         processOptions(bundle);
 
         if (inputUri != null && outputUri != null) {
@@ -171,54 +171,54 @@ public class UCropFragment extends Fragment {
     }
 
     /**
-     * This method extracts {@link UCrop.Options #optionsBundle} from incoming bundle
+     * This method extracts {@link ZCrop.Options #optionsBundle} from incoming bundle
      * and setups fragment, {@link OverlayView} and {@link CropImageView} properly.
      */
     @SuppressWarnings("deprecation")
     private void processOptions(@NonNull Bundle bundle) {
         // Bitmap compression options
-        String compressionFormatName = bundle.getString(UCrop.Options.EXTRA_COMPRESSION_FORMAT_NAME);
+        String compressionFormatName = bundle.getString(ZCrop.Options.EXTRA_COMPRESSION_FORMAT_NAME);
         Bitmap.CompressFormat compressFormat = null;
         if (!TextUtils.isEmpty(compressionFormatName)) {
             compressFormat = Bitmap.CompressFormat.valueOf(compressionFormatName);
         }
         mCompressFormat = (compressFormat == null) ? DEFAULT_COMPRESS_FORMAT : compressFormat;
 
-        mCompressQuality = bundle.getInt(UCrop.Options.EXTRA_COMPRESSION_QUALITY, UCropActivity.DEFAULT_COMPRESS_QUALITY);
+        mCompressQuality = bundle.getInt(ZCrop.Options.EXTRA_COMPRESSION_QUALITY, ZCropActivity.DEFAULT_COMPRESS_QUALITY);
 
         // Gestures options
-        int[] allowedGestures = bundle.getIntArray(UCrop.Options.EXTRA_ALLOWED_GESTURES);
+        int[] allowedGestures = bundle.getIntArray(ZCrop.Options.EXTRA_ALLOWED_GESTURES);
         if (allowedGestures != null && allowedGestures.length == TABS_COUNT) {
             mAllowedGestures = allowedGestures;
         }
 
         // Crop image view options
-        mGestureCropImageView.setMaxBitmapSize(bundle.getInt(UCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
-        mGestureCropImageView.setMaxScaleMultiplier(bundle.getFloat(UCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
-        mGestureCropImageView.setImageToWrapCropBoundsAnimDuration(bundle.getInt(UCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
+        mGestureCropImageView.setMaxBitmapSize(bundle.getInt(ZCrop.Options.EXTRA_MAX_BITMAP_SIZE, CropImageView.DEFAULT_MAX_BITMAP_SIZE));
+        mGestureCropImageView.setMaxScaleMultiplier(bundle.getFloat(ZCrop.Options.EXTRA_MAX_SCALE_MULTIPLIER, CropImageView.DEFAULT_MAX_SCALE_MULTIPLIER));
+        mGestureCropImageView.setImageToWrapCropBoundsAnimDuration(bundle.getInt(ZCrop.Options.EXTRA_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION, CropImageView.DEFAULT_IMAGE_TO_CROP_BOUNDS_ANIM_DURATION));
 
         // Overlay view options
-        mOverlayView.setFreestyleCropEnabled(bundle.getBoolean(UCrop.Options.EXTRA_FREE_STYLE_CROP, OverlayView.DEFAULT_FREESTYLE_CROP_MODE != OverlayView.FREESTYLE_CROP_MODE_DISABLE));
+        mOverlayView.setFreestyleCropEnabled(bundle.getBoolean(ZCrop.Options.EXTRA_FREE_STYLE_CROP, OverlayView.DEFAULT_FREESTYLE_CROP_MODE != OverlayView.FREESTYLE_CROP_MODE_DISABLE));
 
-        mOverlayView.setDimmedColor(bundle.getInt(UCrop.Options.EXTRA_DIMMED_LAYER_COLOR, getResources().getColor(R.color.ucrop_color_default_dimmed)));
-        mOverlayView.setCircleDimmedLayer(bundle.getBoolean(UCrop.Options.EXTRA_CIRCLE_DIMMED_LAYER, OverlayView.DEFAULT_CIRCLE_DIMMED_LAYER));
+        mOverlayView.setDimmedColor(bundle.getInt(ZCrop.Options.EXTRA_DIMMED_LAYER_COLOR, getResources().getColor(R.color.ucrop_color_default_dimmed)));
+        mOverlayView.setCircleDimmedLayer(bundle.getBoolean(ZCrop.Options.EXTRA_CIRCLE_DIMMED_LAYER, OverlayView.DEFAULT_CIRCLE_DIMMED_LAYER));
 
-        mOverlayView.setShowCropFrame(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_FRAME, OverlayView.DEFAULT_SHOW_CROP_FRAME));
-        mOverlayView.setCropFrameColor(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_frame)));
-        mOverlayView.setCropFrameStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_FRAME_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_frame_stoke_width)));
+        mOverlayView.setShowCropFrame(bundle.getBoolean(ZCrop.Options.EXTRA_SHOW_CROP_FRAME, OverlayView.DEFAULT_SHOW_CROP_FRAME));
+        mOverlayView.setCropFrameColor(bundle.getInt(ZCrop.Options.EXTRA_CROP_FRAME_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_frame)));
+        mOverlayView.setCropFrameStrokeWidth(bundle.getInt(ZCrop.Options.EXTRA_CROP_FRAME_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_frame_stoke_width)));
 
-        mOverlayView.setShowCropGrid(bundle.getBoolean(UCrop.Options.EXTRA_SHOW_CROP_GRID, OverlayView.DEFAULT_SHOW_CROP_GRID));
-        mOverlayView.setCropGridRowCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_ROW_COUNT, OverlayView.DEFAULT_CROP_GRID_ROW_COUNT));
-        mOverlayView.setCropGridColumnCount(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLUMN_COUNT, OverlayView.DEFAULT_CROP_GRID_COLUMN_COUNT));
-        mOverlayView.setCropGridColor(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_grid)));
-        mOverlayView.setCropGridStrokeWidth(bundle.getInt(UCrop.Options.EXTRA_CROP_GRID_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_grid_stoke_width)));
+        mOverlayView.setShowCropGrid(bundle.getBoolean(ZCrop.Options.EXTRA_SHOW_CROP_GRID, OverlayView.DEFAULT_SHOW_CROP_GRID));
+        mOverlayView.setCropGridRowCount(bundle.getInt(ZCrop.Options.EXTRA_CROP_GRID_ROW_COUNT, OverlayView.DEFAULT_CROP_GRID_ROW_COUNT));
+        mOverlayView.setCropGridColumnCount(bundle.getInt(ZCrop.Options.EXTRA_CROP_GRID_COLUMN_COUNT, OverlayView.DEFAULT_CROP_GRID_COLUMN_COUNT));
+        mOverlayView.setCropGridColor(bundle.getInt(ZCrop.Options.EXTRA_CROP_GRID_COLOR, getResources().getColor(R.color.ucrop_color_default_crop_grid)));
+        mOverlayView.setCropGridStrokeWidth(bundle.getInt(ZCrop.Options.EXTRA_CROP_GRID_STROKE_WIDTH, getResources().getDimensionPixelSize(R.dimen.ucrop_default_crop_grid_stoke_width)));
 
         // Aspect ratio options
-        float aspectRatioX = bundle.getFloat(UCrop.EXTRA_ASPECT_RATIO_X, 0);
-        float aspectRatioY = bundle.getFloat(UCrop.EXTRA_ASPECT_RATIO_Y, 0);
+        float aspectRatioX = bundle.getFloat(ZCrop.EXTRA_ASPECT_RATIO_X, 0);
+        float aspectRatioY = bundle.getFloat(ZCrop.EXTRA_ASPECT_RATIO_Y, 0);
 
-        int aspectRationSelectedByDefault = bundle.getInt(UCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
-        ArrayList<AspectRatio> aspectRatioList = bundle.getParcelableArrayList(UCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
+        int aspectRationSelectedByDefault = bundle.getInt(ZCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
+        ArrayList<AspectRatio> aspectRatioList = bundle.getParcelableArrayList(ZCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
 
         if (aspectRatioX > 0 && aspectRatioY > 0) {
             if (mWrapperStateAspectRatio != null) {
@@ -233,8 +233,8 @@ public class UCropFragment extends Fragment {
         }
 
         // Result bitmap max size options
-        int maxSizeX = bundle.getInt(UCrop.EXTRA_MAX_SIZE_X, 0);
-        int maxSizeY = bundle.getInt(UCrop.EXTRA_MAX_SIZE_Y, 0);
+        int maxSizeX = bundle.getInt(ZCrop.EXTRA_MAX_SIZE_X, 0);
+        int maxSizeY = bundle.getInt(ZCrop.EXTRA_MAX_SIZE_Y, 0);
 
         if (maxSizeX > 0 && maxSizeY > 0) {
             mGestureCropImageView.setMaxResultImageSizeX(maxSizeX);
@@ -293,8 +293,8 @@ public class UCropFragment extends Fragment {
     }
 
     private void setupAspectRatioWidget(@NonNull Bundle bundle, View view) {
-        int aspectRationSelectedByDefault = bundle.getInt(UCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
-        ArrayList<AspectRatio> aspectRatioList = bundle.getParcelableArrayList(UCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
+        int aspectRationSelectedByDefault = bundle.getInt(ZCrop.Options.EXTRA_ASPECT_RATIO_SELECTED_BY_DEFAULT, 0);
+        ArrayList<AspectRatio> aspectRatioList = bundle.getParcelableArrayList(ZCrop.Options.EXTRA_ASPECT_RATIO_OPTIONS);
 
         if (aspectRatioList == null || aspectRatioList.isEmpty()) {
             aspectRationSelectedByDefault = 2;
@@ -514,17 +514,17 @@ public class UCropFragment extends Fragment {
 
     protected UCropResult getResult(Uri uri, float resultAspectRatio, int offsetX, int offsetY, int imageWidth, int imageHeight) {
         return new UCropResult(RESULT_OK, new Intent()
-                .putExtra(UCrop.EXTRA_OUTPUT_URI, uri)
-                .putExtra(UCrop.EXTRA_OUTPUT_CROP_ASPECT_RATIO, resultAspectRatio)
-                .putExtra(UCrop.EXTRA_OUTPUT_IMAGE_WIDTH, imageWidth)
-                .putExtra(UCrop.EXTRA_OUTPUT_IMAGE_HEIGHT, imageHeight)
-                .putExtra(UCrop.EXTRA_OUTPUT_OFFSET_X, offsetX)
-                .putExtra(UCrop.EXTRA_OUTPUT_OFFSET_Y, offsetY)
+                .putExtra(ZCrop.EXTRA_OUTPUT_URI, uri)
+                .putExtra(ZCrop.EXTRA_OUTPUT_CROP_ASPECT_RATIO, resultAspectRatio)
+                .putExtra(ZCrop.EXTRA_OUTPUT_IMAGE_WIDTH, imageWidth)
+                .putExtra(ZCrop.EXTRA_OUTPUT_IMAGE_HEIGHT, imageHeight)
+                .putExtra(ZCrop.EXTRA_OUTPUT_OFFSET_X, offsetX)
+                .putExtra(ZCrop.EXTRA_OUTPUT_OFFSET_Y, offsetY)
         );
     }
 
     protected UCropResult getError(Throwable throwable) {
-        return new UCropResult(UCrop.RESULT_ERROR, new Intent().putExtra(UCrop.EXTRA_ERROR, throwable));
+        return new UCropResult(ZCrop.RESULT_ERROR, new Intent().putExtra(ZCrop.EXTRA_ERROR, throwable));
     }
 
     public class UCropResult {

@@ -36,8 +36,6 @@ android {
         abortOnError false
     }
 
-
-
     sourceSets.main {
         jni.srcDirs = []
     }
