@@ -5,6 +5,10 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
-        <activity android:name=".UCropActivity"/>
+
+        <activity
+            android:name=".UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 </manifest>
