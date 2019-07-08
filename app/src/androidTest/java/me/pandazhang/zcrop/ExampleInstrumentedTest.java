@@ -1,4 +1,4 @@
-package me.pandazhang.app_zcrop;
+package me.pandazhang.zcrop;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

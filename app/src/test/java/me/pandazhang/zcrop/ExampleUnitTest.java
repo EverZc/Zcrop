@@ -1,4 +1,4 @@
-package me.pandazhang.app_zcrop;
+package me.pandazhang.zcrop;
 
 import org.junit.Test;
 
