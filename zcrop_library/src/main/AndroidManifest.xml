@@ -4,8 +4,6 @@
     <application
         android:allowBackup="true"
         android:supportsRtl="true">
-
-
         <activity
             android:name=".UCropActivity"
             android:screenOrientation="portrait"
